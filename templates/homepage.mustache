@@ -11,7 +11,10 @@
 
 <body>
   <h1>Headmaster Homepage!</h1>
+  <h3>Select Cohort</h3>
   <main>{{{cohortsListHTML}}}</main>
+
+  <h3>Create New Cohort</h3>
 
   <form action="/cohorts" method="post">
     <label>Cohort title:</label>
@@ -19,6 +22,21 @@
 
     <label>Slug:</label>
     <input type="text" name="slug" />
+
+    <br>
+    <br>
+
+    <label for="start">Start Date:</label>
+
+    <input type="date" id="start" name="tript-start"
+            value="2019-10-07"
+            min="2019-01-01" max="2025-12-31">
+
+     <label for="start">End Date:</label>
+
+    <input type="date" id="start" name="tript-start"
+            value="2019-10-07"
+            min="2019-01-01" max="2025-12-31">        
 
     <button type="submit">Add Cohort</button>
   </form>

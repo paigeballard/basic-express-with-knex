@@ -1,0 +1,28 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+  <meta charset="utf-8">
+  <title>Assignments</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+  <h1>Assignment Page</h1>
+  <h3>Select Cohort</h3>
+  <main>{{{cohortsListHTML}}}</main>
+
+  <h3>Create Assignment</h3>
+
+  <form action="/cohorts" method="post">
+    <label>Assignment title:</label>
+    <input type="text" name="title" />
+
+
+    <button type="submit">Add</button>
+  </form>
+</body>
+
+</html>

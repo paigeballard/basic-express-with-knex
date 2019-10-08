@@ -20,6 +20,14 @@ exports.seed = function(knex) {
           isActive: false,
           startDate: '2018-09-14',
           endDate: '2019-04-02'
+        },
+        {
+          id: 3,
+          title: '2020 June Houston Flex',
+          slug: '2020-06-houston-flex',
+          isActive: false,
+          startDate: '2020-06-14',
+          endDate: '2020-12-22'
         }
       ]);
     });

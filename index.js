@@ -13,6 +13,9 @@ const port = 3000
 // Express.js Endpoints
 
 const homepageTemplate = fs.readFileSync('./templates/homepage.mustache', 'utf8')
+const selectCohortsTemplate = fs.readFileSync('./templates/selectcohorts.mustache', 'utf8')
+const assignmentsTemplate = fs.readFileSync('./templates/assignments.mustache', 'utf8')
+const studentsTemplate = fs.readFileSync('./templates/students.mustache', 'utf8')
 
 app.use(express.urlencoded())
 
@@ -36,12 +39,21 @@ app.post('/cohorts', function (req, res) {
 app.get('/cohorts/:slug', function (req, res) {
   getOneCohort(req.params.slug)
     .then(function (cohort) {
-      res.send('<pre>' + prettyPrintJSON(cohort) + '</pre>')
+      res.send(mustache.render(selectCohortsTemplate, { selectListHTML: renderOneCohort(cohort) }))
+      ('<pre>' + prettyPrintJSON(cohort) + '</pre>')
     })
     .catch(function (err) {
       res.status(404).send('cohort not found :(')
     })
 })
+
+app.get('/students', function (req, res) {
+  getAllStudents()
+    .then(function (allStudents) {
+      res.send(mustache.render(studentsTemplate, { studentsListHTML: renderAllStudents(allStudents) }))
+    })
+})
+
 
 app.listen(port, function () {
   console.log('Listening on port ' + port + ' 👍')
@@ -58,12 +70,34 @@ function renderAllCohorts (allCohorts) {
   return '<ul>' + allCohorts.map(renderCohort).join('') + '</ul>'
 }
 
+function renderOneCohort (cohort) {
+  return `<table>
+            Cohort ID: ${cohort.id}<br>
+            <br>Title: ${cohort.title}<br>
+            <br>Slug: ${cohort.slug}<br>
+            <br>Start Date: ${cohort.startDate}<br>
+            <br>End Date: ${cohort.endDate}<br>
+  </table>`
+  
+}
+
+function renderAllStudents (Students) {
+  return `<li>
+            Name: ${Students.name}
+  </li>`
+}
+//`<li><a href="/${cohort.slug}">${cohort.title}</a></li>`
 // -----------------------------------------------------------------------------
 // Database Queries
 
 const getAllCohortsQuery = `
   SELECT *
   FROM Cohorts
+`
+
+const getAllStudentsQuery = `
+  SELECT *
+  From Students
 `
 
 function getAllCohorts () {
@@ -82,7 +116,11 @@ function getOneCohort (slug) {
 }
 
 function createCohort (cohort) {
-  return db.raw('INSERT INTO Cohorts (title, slug, isActive) VALUES (?, ?, true)', [cohort.title, cohort.slug])
+  return db.raw('INSERT INTO Cohorts (title, slug, isActive, startDate, endDate) VALUES (?, ?, true)', [cohort.title, cohort.slug, cohort.startDate, cohort.endDate])
+}
+
+function getAllStudents () {
+  return db.raw(getAllStudentsQuery)
 }
 
 // -----------------------------------------------------------------------------
